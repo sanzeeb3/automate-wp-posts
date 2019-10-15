@@ -8,16 +8,16 @@ Stable tag: 1.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Send posts to an online automation tool such as Zapier to automate tasks. 
+Send posts to an online automation tool such as Zapier, automate.io to automate tasks. 
 
 == Description ==
 
-Send posts to an online automation tool such as Zapier to automate tasks. 
+Send posts to an online automation tool such as Zapier, automate.io to automate tasks. 
 
 ### Features:
 
-* Store WP posts in your Google Spreadsheet.
-* Send Email/SMS alert when a post is published.
+* Store WP posts in your Google Spreadsheet. See, [https://zapier.com/apps/google-sheets/integrations](https://zapier.com/apps/google-sheets/integrations)
+* Send Email/SMS alert when a post is published. See, [https://zapier.com/apps/sms/integrations](https://zapier.com/apps/sms/integrations)
 * Share WP posts in social medias such as Facebook, Twitter etc.
 * And many more with [Zapier](https://zapier.com), [automate.io](https://automate.io) and more.
 
@@ -42,5 +42,5 @@ Yes, you can! Join in on [GitHub repository](https://github.com/sanzeeb3/automat
 
 == Changelog == 
 
-= 1.0.0 - 10/12/2019 =
+= 1.0.0 - 10/13/2019 =
 * Initial Release
