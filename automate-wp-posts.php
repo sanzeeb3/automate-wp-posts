@@ -6,9 +6,14 @@
  * Author: Sanjeev Aryal
  * Author URI: http://www.sanjeebaryal.com.np
  * Text Domain: automate-wp-posts
+ *
+ * @package    Automate WP Posts
+ * @author     Sanjeev Aryal
+ * @since      1.0.0
+ * @license    GPL-3.0+
  */
 
-defined( 'ABSPATH' ) or die( "No script kiddies please!" );
+defined( 'ABSPATH' ) || die( 'No script kiddies please!' );
 
 add_action( 'admin_menu', 'awp_register_setting_menu' );
 add_action( 'admin_init', 'awp_save_settings' );
@@ -25,7 +30,7 @@ function awp_register_setting_menu() {
 
 /**
  * Settings page for Automate WP Posts
- * 
+ *
  * @since 1.0.0
  */
 function awp_settings_page() {
@@ -35,16 +40,16 @@ function awp_settings_page() {
 		<h2 class="wp-heading-inline"><?php esc_html_e( 'Automate WP Posts Settings', 'automate-wp-posts' ); ?></h2>
 		<form method="post">
 			<table class="form-table">
-			        <tr valign="top">
-			           	<th scope="row"><?php echo esc_html__( 'Webhook URL', 'automate-wp-posts' );?></th>
-			        		<td><input style="width:35%" type="url" name="webhook_url" value ="<?php echo esc_url( $webhook_url ); ?>" class="automate-wp-posts-webhook-url" /><br/>
-			        		</td>
-			        </tr>
-			        <?php do_action( 'automate_wp_posts_settings' );?>
-		            <?php wp_nonce_field( 'automate_wp_posts_settings', 'automate_wp_posts_settings_nonce' );?>
+					<tr valign="top">
+						   <th scope="row"><?php echo esc_html__( 'Webhook URL', 'automate-wp-posts' ); ?></th>
+							<td><input style="width:35%" type="url" name="webhook_url" value ="<?php echo esc_url( $webhook_url ); ?>" class="automate-wp-posts-webhook-url" /><br/>
+							</td>
+					</tr>
+					<?php do_action( 'automate_wp_posts_settings' ); ?>
+					<?php wp_nonce_field( 'automate_wp_posts_settings', 'automate_wp_posts_settings_nonce' ); ?>
 
 			</table>
-			    <?php submit_button(); ?>
+				<?php submit_button(); ?>
 		</form>
 	<?php
 }
@@ -56,30 +61,33 @@ function awp_settings_page() {
  */
 function awp_save_settings() {
 
-	if( isset( $_POST['automate_wp_posts_settings_nonce'] ) ) {
-		if( ! wp_verify_nonce( $_POST['automate_wp_posts_settings_nonce'], 'automate_wp_posts_settings' )
+	if ( isset( $_POST['automate_wp_posts_settings_nonce'] ) ) {
+		if ( ! wp_verify_nonce( $_POST['automate_wp_posts_settings_nonce'], 'automate_wp_posts_settings' )
 			) {
 			   print 'Nonce Failed!';
 			   exit;
 		} else {
 			$webhook_url = isset( $_POST['webhook_url'] ) ? esc_url_raw( $_POST['webhook_url'] ) : '';
-			$message     = esc_html__( 'Done!', 'automate-wp-posts');
+			$message     = esc_html__( 'Done!', 'automate-wp-posts' );
 			$class       = 'notice-success';
 
 			update_option( 'awp_webhook_url', $webhook_url );
 
-			if ( filter_var( $webhook_url, FILTER_VALIDATE_URL ) === FALSE) {
+			if ( filter_var( $webhook_url, FILTER_VALIDATE_URL ) === false ) {
 				$message = esc_html__( 'Not a valid webhook URL.' );
 				$class   = 'error';
 			}
 
-			add_action( 'admin_notices', function() use ( $message, $class ) {
-			    ?>
-				    <div class="notice <?php echo $class;?> is-dismissible">
-				        <p><?php echo $message; ?></p>
-				    </div>
-				<?php
-			});
+			add_action(
+				'admin_notices',
+				function() use ( $message, $class ) {
+					?>
+					<div class="notice <?php echo $class; ?> is-dismissible">
+						<p><?php echo $message; ?></p>
+					</div>
+					<?php
+				}
+			);
 		}
 	}
 }
@@ -99,38 +107,47 @@ function awp_send_data_to_automate( array $data ) {
 		return;
 	}
 
-    $headers 	 = array( 'Accept: application/json', 'Content-Type: application/json' );
-	$args 		 = apply_filters( 'automate_wp_posts_arguments', array(
-					'method'  => 'POST',
-				    'headers' => $headers,
-  	     	        'body'    => json_encode( $data ),
-				));
+	$headers = array( 'Accept: application/json', 'Content-Type: application/json' );
+	$args    = apply_filters(
+		'automate_wp_posts_arguments',
+		array(
+			'method'  => 'POST',
+			'headers' => $headers,
+			'body'    => wp_json_encode( $data ),
+		)
+	);
 
-	$result  = wp_remote_post( esc_url_raw( $webhook_url ), $args );
+	$result = wp_remote_post( esc_url_raw( $webhook_url ), $args );
 
-    if ( is_wp_error( $result ) ) {
-        error_log( print_r( $result->get_error_message(), true ) );
-    }
+	if ( is_wp_error( $result ) ) {
+		error_log( print_r( $result->get_error_message(), true ) );
+	}
 
-    do_action( 'automate_wp_posts_data_sent', $result, $webhook_url );
+	do_action( 'automate_wp_posts_data_sent', $result, $webhook_url );
 }
 
 /**
  * Prepare data to send to webhooks on WP Post Update.
- * 
+ *
+ * @param  $id Post ID.
+ * @param  $post Post object.
+ *
  * @since 1.0.0
  */
 function awp_publish_post( $id, $post ) {
 
 	$author = $post->post_author;
-	$data = apply_filters( 'automate_wp_posts_data', array(
-		__( 'Post ID', 'automate-wp-posts' ) => $id,
-		__( 'Author Display Name', 'automate-wp-posts' ) => get_the_author_meta( 'display_name', $author ),
-		__( 'Author Email Address', 'automate-wp-posts' ) => get_the_author_meta( 'user_email', $author ),
-		__( 'Post Title', 'automate-wp-posts' ) => $post->post_title,
-		__( 'Post Content', 'automate-wp-posts' ) => $post->post_content,
-		__( 'Post Permalink', 'automate-wp-posts' ) => get_permalink( $id )
-	));
+	$data   = apply_filters(
+		'automate_wp_posts_data',
+		array(
+			__( 'Post ID', 'automate-wp-posts' )        => $id,
+			__( 'Author Display Name', 'automate-wp-posts' ) => get_the_author_meta( 'display_name', $author ),
+			__( 'Author Email Address', 'automate-wp-posts' ) => get_the_author_meta( 'user_email', $author ),
+			__( 'Post Title', 'automate-wp-posts' )     => $post->post_title,
+			__( 'Post Content', 'automate-wp-posts' )   => $post->post_content,
+			__( 'Post Permalink', 'automate-wp-posts' ) => get_permalink( $id ),
+		)
+	);
 
 	awp_send_data_to_automate( $data );
 }
