@@ -1,4 +1,4 @@
-### WordPress Plugin To automate published posts.
+### WordPress Plugin to automate published posts.
 
 * Send posts to an online automation tool such as Zapier, automate.io to automate tasks. 
 
