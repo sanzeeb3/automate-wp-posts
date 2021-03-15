@@ -140,12 +140,12 @@ function awp_publish_post( $id, $post ) {
 	$data   = apply_filters(
 		'automate_wp_posts_data',
 		array(
-			__( 'Post ID', 'automate-wp-posts' )        => $id,
-			__( 'Author Display Name', 'automate-wp-posts' ) => get_the_author_meta( 'display_name', $author ),
-			__( 'Author Email Address', 'automate-wp-posts' ) => get_the_author_meta( 'user_email', $author ),
-			__( 'Post Title', 'automate-wp-posts' )     => $post->post_title,
-			__( 'Post Content', 'automate-wp-posts' )   => $post->post_content,
-			__( 'Post Permalink', 'automate-wp-posts' ) => get_permalink( $id ),
+			esc_html__( 'Post ID', 'automate-wp-posts' )        => $id,
+			esc_html__( 'Author Display Name', 'automate-wp-posts' ) => get_the_author_meta( 'display_name', $author ),
+			esc_html__( 'Author Email Address', 'automate-wp-posts' ) => get_the_author_meta( 'user_email', $author ),
+			esc_html__( 'Post Title', 'automate-wp-posts' )     => $post->post_title,
+			esc_html__( 'Post Content', 'automate-wp-posts' )   => $post->post_content,
+			esc_html__( 'Post Permalink', 'automate-wp-posts' ) => get_permalink( $id ),
 		)
 	);
 
