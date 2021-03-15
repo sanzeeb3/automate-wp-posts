@@ -1,6 +1,6 @@
-#### WordPress Plugin To automate published posts.
+### WordPress Plugin To automate published posts.
 
-###### Send posts to an online automation tool such as Zapier, automate.io to automate tasks. 
+* Send posts to an online automation tool such as Zapier, automate.io to automate tasks. 
 
 
 ### Features:
@@ -10,9 +10,10 @@
 * Share WP posts in social medias such as Facebook, Twitter etc.
 * And many more with [Zapier](https://zapier.com), [automate.io](https://automate.io) and more.
 
-### Documentation: http://sanjeebaryal.com.np/how-to-use-automate-wp-posts-plugin
+### Documentation:
+* http://sanjeebaryal.com.np/how-to-use-automate-wp-posts-plugin
 
-#### Installation:
+### Installation:
 
 * Download the plugin's Zip file: https://downloads.wordpress.org/plugin/automate-wp-posts.zip
 * Install and activate the plugin.
